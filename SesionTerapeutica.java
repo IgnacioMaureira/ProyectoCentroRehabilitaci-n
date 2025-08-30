@@ -59,4 +59,13 @@ public class SesionTerapeutica{
         this.tipoTerapia = tipoT;
     }
     
+       // Dentro de la clase SesionTerapeutica
+    public void mostrarInfoSesion() {
+        System.out.println("Fecha: " + fecha);
+        System.out.println("Hora: " + hora);
+        System.out.println("Terapeuta: " + terapeuta.getNombre());
+        System.out.println("Tipo de Terapia: " + tipoTerapia);
+        System.out.println("Observaciones: " + observaciones);
+    }
+    
 }
