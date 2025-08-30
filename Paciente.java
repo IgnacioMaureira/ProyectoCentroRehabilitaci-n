@@ -1,19 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyectosia;
 
-/**
- *
- * @author novoy
- */
+
 public class Paciente {
     private String rut;
     private String nombre;
     private int edad;
     private String fechaDeNacimiento;
     private Terapias terapia;
+    private boolean estado;
     
     public Paciente(String rut,String nombre,int edad,String fechaDeNacimiento, Terapias terapia){
         this.rut = rut;
@@ -21,6 +15,7 @@ public class Paciente {
         this.edad = edad;
         this.fechaDeNacimiento = fechaDeNacimiento;
         this.terapia = terapia;
+        estado = false;
     }
     
      // Getters
@@ -43,6 +38,10 @@ public class Paciente {
     public Terapias getTerapia(){
         return terapia;
     }
+    
+    public boolean getEstado(){
+        return estado;
+    }
 
     // Setters
     public void setRut(String rut) {
@@ -63,5 +62,9 @@ public class Paciente {
     
     public void setTerapia(Terapias terapia){
         this.terapia = terapia;
+    }
+    
+    public void setEstado(boolean estado){
+        this.estado = estado;
     }
 }
