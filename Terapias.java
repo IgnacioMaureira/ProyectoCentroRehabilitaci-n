@@ -1,20 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyectosia;
 
-/**
- *
- * @author novoy
- */
 public class Terapias {
     private String nombreTerapia;
-    private int cantidadSesiones;
+    private String tipoDeTerapia;
     
-    public Terapias(String nombre, int sesiones){
+    public Terapias(String nombre, String tipo){
         nombreTerapia = nombre;
-        cantidadSesiones = sesiones;
+        tipoDeTerapia = tipo;
     }
     
     // Getters
@@ -22,8 +14,8 @@ public class Terapias {
         return nombreTerapia;
     }
 
-    public int getCantidadSesiones() {
-        return cantidadSesiones;
+    public String getTipoTerapia() {
+        return tipoDeTerapia;
     }
 
     // Setters
@@ -31,8 +23,8 @@ public class Terapias {
         this.nombreTerapia = nombreTerapia;
     }
 
-    public void setCantidadSesiones(int cantidadSesiones) {
-        this.cantidadSesiones = cantidadSesiones;
+    public void settTipoTerapia(String tipo) {
+        this.tipoDeTerapia = tipo;
     }
     
 
