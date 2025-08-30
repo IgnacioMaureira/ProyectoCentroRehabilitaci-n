@@ -1,20 +1,21 @@
 package proyectosia;
 
+import java.util.*;
 
 public class Paciente {
     private String rut;
     private String nombre;
     private int edad;
     private String fechaDeNacimiento;
-    private Terapias terapia;
+    private List<SesionTerapeutica> sesiones;
     private boolean estado;
     
-    public Paciente(String rut,String nombre,int edad,String fechaDeNacimiento, Terapias terapia){
+    public Paciente(String rut,String nombre,int edad,String fechaDeNacimiento){
         this.rut = rut;
         this.nombre = nombre;
         this.edad = edad;
         this.fechaDeNacimiento = fechaDeNacimiento;
-        this.terapia = terapia;
+        this.sesiones = new ArrayList<>();
         estado = false;
     }
     
@@ -35,8 +36,8 @@ public class Paciente {
         return fechaDeNacimiento;
     }
     
-    public Terapias getTerapia(){
-        return terapia;
+    public List<SesionTerapeutica> getSesiones() {
+        return sesiones;
     }
     
     public boolean getEstado(){
@@ -60,11 +61,11 @@ public class Paciente {
         this.fechaDeNacimiento = fechaDeNacimiento;
     }
     
-    public void setTerapia(Terapias terapia){
-        this.terapia = terapia;
+    public void setSesiones(List<SesionTerapeutica> sesiones) {
+        this.sesiones = sesiones;
     }
     
     public void setEstado(boolean estado){
         this.estado = estado;
     }
-}
+}               
