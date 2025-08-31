@@ -1,7 +1,6 @@
 package proyectosia;
 
 public class SesionTerapeutica{
-    //private int idSesion;
     private String fecha;
     private String hora;
     private Terapeuta terapeuta;
@@ -9,11 +8,11 @@ public class SesionTerapeutica{
     private String tipoTerapia;
 
     public SesionTerapeutica(String fecha, String hora, Terapeuta terapeuta,String observaciones, String tipoTerapia){
-        this.fecha= fecha;
-        this.hora= hora;
-        this.observaciones= observaciones;
-        this.terapeuta= terapeuta;
-        this.tipoTerapia= tipoTerapia;
+        this.fecha = fecha;
+        this.hora = hora;
+        this.observaciones = observaciones;
+        this.terapeuta = terapeuta;
+        this.tipoTerapia = tipoTerapia;
     }
     
     //GETTERS
@@ -69,3 +68,4 @@ public class SesionTerapeutica{
     }
     
 }
+
