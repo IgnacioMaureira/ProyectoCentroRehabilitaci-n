@@ -19,6 +19,17 @@ public class Paciente {
         estado = false;
     }
     
+    // Agregar sesion pasando un objeto SesionTerapeutica ya creado
+    public void agregarSesion(SesionTerapeutica sesion) {
+        this.sesiones.add(sesion);
+    }
+
+    // Agregar sesion creando el objeto dentro y a partir de los datos basicos
+    public void agregarSesion(String fecha, String hora, Terapeuta terapeuta, String observaciones, String tipoTerapia) {
+        SesionTerapeutica sesion = new SesionTerapeutica(fecha, hora, terapeuta, observaciones, tipoTerapia);
+        this.sesiones.add(sesion);
+    }
+    
      // Getters
     public String getRut() {
         return rut;
@@ -68,4 +79,4 @@ public class Paciente {
     public void setEstado(boolean estado){
         this.estado = estado;
     }
-}               
+}
