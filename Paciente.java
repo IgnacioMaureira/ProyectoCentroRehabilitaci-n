@@ -30,6 +30,10 @@ public class Paciente {
         this.sesiones.add(sesion);
     }
     
+    public int getCantidadSesiones() {
+        return sesiones.size();
+    }
+    
      // Getters
     public String getRut() {
         return rut;
@@ -47,8 +51,8 @@ public class Paciente {
         return fechaDeNacimiento;
     }
     
-    public List<SesionTerapeutica> getSesiones() {
-        return sesiones;
+    public List<SesionTerapeutica> getSesionesCopia() {
+        return new ArrayList<>(sesiones);
     }
     
     public boolean getEstado(){
@@ -72,9 +76,6 @@ public class Paciente {
         this.fechaDeNacimiento = fechaDeNacimiento;
     }
     
-    public void setSesiones(List<SesionTerapeutica> sesiones) {
-        this.sesiones = sesiones;
-    }
     
     public void setEstado(boolean estado){
         this.estado = estado;
