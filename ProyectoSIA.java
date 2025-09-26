@@ -195,41 +195,41 @@ public class ProyectoSIA {
         pacientes.add(paciente10);
         
         // Paciente 1: Gabriela Núñez → 2 sesiones
-        paciente1.getSesiones().add(new SesionTerapeutica("10/08/2025", "10:30", terapeuta1, "Primera sesión, leve rigidez en pierna derecha.", t1.getNombreTerapia()));
-        paciente1.getSesiones().add(new SesionTerapeutica("12/08/2025", "11:00", terapeuta3, "Segunda sesión, mejora movilidad lumbar.", t3.getNombreTerapia()));
+        paciente1.agregarSesion(new SesionTerapeutica("10/08/2025", "10:30", terapeuta1, "Primera sesión, leve rigidez en pierna derecha.", t1.getNombreTerapia()));
+        paciente1.agregarSesion(new SesionTerapeutica("12/08/2025", "11:00", terapeuta3, "Segunda sesión, mejora movilidad lumbar.", t3.getNombreTerapia()));
 
         // Paciente 2: Claudio Barraza → 1 sesión
-        paciente2.getSesiones().add(new SesionTerapeutica("11/08/2025", "11:00", terapeuta2, "Ejercicios en piscina, buena tolerancia.", t2.getNombreTerapia()));
+        paciente2.agregarSesion(new SesionTerapeutica("11/08/2025", "11:00", terapeuta2, "Ejercicios en piscina, buena tolerancia.", t2.getNombreTerapia()));
 
         // Paciente 3: Marcela Vergara → 3 sesiones
-        paciente3.getSesiones().add(new SesionTerapeutica("12/08/2025", "09:00", terapeuta3, "Aplicación de electroterapia en zona lumbar.", t3.getNombreTerapia()));
-        paciente3.getSesiones().add(new SesionTerapeutica("14/08/2025", "10:00", terapeuta1, "Fisioterapia adicional para hombro.", t1.getNombreTerapia()));
-        paciente3.getSesiones().add(new SesionTerapeutica("16/08/2025", "12:30", terapeuta5, "Ejercicios respiratorios y relajación.", t5.getNombreTerapia()));
+        paciente3.agregarSesion(new SesionTerapeutica("12/08/2025", "09:00", terapeuta3, "Aplicación de electroterapia en zona lumbar.", t3.getNombreTerapia()));
+        paciente3.agregarSesion(new SesionTerapeutica("14/08/2025", "10:00", terapeuta1, "Fisioterapia adicional para hombro.", t1.getNombreTerapia()));
+        paciente3.agregarSesion(new SesionTerapeutica("16/08/2025", "12:30", terapeuta5, "Ejercicios respiratorios y relajación.", t5.getNombreTerapia()));
 
         // Paciente 4: Jorge Alvarado → 1 sesión
-        paciente4.getSesiones().add(new SesionTerapeutica("13/08/2025", "15:00", terapeuta4, "Motricidad fina y actividades diarias.", t4.getNombreTerapia()));
+        paciente4.agregarSesion(new SesionTerapeutica("13/08/2025", "15:00", terapeuta4, "Motricidad fina y actividades diarias.", t4.getNombreTerapia()));
 
         // Paciente 5: Carolina Espinoza → 2 sesiones
-        paciente5.getSesiones().add(new SesionTerapeutica("14/08/2025", "16:30", terapeuta5, "Sesión de ejercicios respiratorios asistidos.", t5.getNombreTerapia()));
-        paciente5.getSesiones().add(new SesionTerapeutica("18/08/2025", "10:30", terapeuta6, "Masoterapia en espalda baja.", t7.getNombreTerapia()));
+        paciente5.agregarSesion(new SesionTerapeutica("14/08/2025", "16:30", terapeuta5, "Sesión de ejercicios respiratorios asistidos.", t5.getNombreTerapia()));
+        paciente5.agregarSesion(new SesionTerapeutica("18/08/2025", "10:30", terapeuta6, "Masoterapia en espalda baja.", t7.getNombreTerapia()));
 
         // Paciente 6: Héctor Sáez → 1 sesión
-        paciente6.getSesiones().add(new SesionTerapeutica("15/08/2025", "12:00", terapeuta6, "Masaje terapéutico en hombro izquierdo, reducción de dolor.", t7.getNombreTerapia()));
+        paciente6.agregarSesion(new SesionTerapeutica("15/08/2025", "12:00", terapeuta6, "Masaje terapéutico en hombro izquierdo, reducción de dolor.", t7.getNombreTerapia()));
 
         // Paciente 7: Rocío Valdés → 3 sesiones
-        paciente7.getSesiones().add(new SesionTerapeutica("16/08/2025", "09:30", terapeuta7, "Corrección postural básica, mejora en la alineación.", t8.getNombreTerapia()));
-        paciente7.getSesiones().add(new SesionTerapeutica("18/08/2025", "11:00", terapeuta8, "Aplicación de crioterapia en cuello.", t9.getNombreTerapia()));
-        paciente7.getSesiones().add(new SesionTerapeutica("20/08/2025", "13:00", terapeuta1, "Fisioterapia general.", t1.getNombreTerapia()));
+        paciente7.agregarSesion(new SesionTerapeutica("16/08/2025", "09:30", terapeuta7, "Corrección postural básica, mejora en la alineación.", t8.getNombreTerapia()));
+        paciente7.agregarSesion(new SesionTerapeutica("18/08/2025", "11:00", terapeuta8, "Aplicación de crioterapia en cuello.", t9.getNombreTerapia()));
+        paciente7.agregarSesion(new SesionTerapeutica("20/08/2025", "13:00", terapeuta1, "Fisioterapia general.", t1.getNombreTerapia()));
 
         // Paciente 8: Felipe Álvarez → 1 sesión
-        paciente8.getSesiones().add(new SesionTerapeutica("17/08/2025", "10:00", terapeuta8, "Aplicación de crioterapia en rodilla derecha.", t9.getNombreTerapia()));
+        paciente8.agregarSesion(new SesionTerapeutica("17/08/2025", "10:00", terapeuta8, "Aplicación de crioterapia en rodilla derecha.", t9.getNombreTerapia()));
 
         // Paciente 9: Natalia Carrasco → 2 sesiones
-        paciente9.getSesiones().add(new SesionTerapeutica("18/08/2025", "14:00", terapeuta9, "Ejercicios neurológicos básicos para coordinación motora.", t11.getNombreTerapia()));
-        paciente9.getSesiones().add(new SesionTerapeutica("20/08/2025", "15:30", terapeuta10, "Ultrasonido en zona lumbar.", t12.getNombreTerapia()));
+        paciente9.agregarSesion(new SesionTerapeutica("18/08/2025", "14:00", terapeuta9, "Ejercicios neurológicos básicos para coordinación motora.", t11.getNombreTerapia()));
+        paciente9.agregarSesion(new SesionTerapeutica("20/08/2025", "15:30", terapeuta10, "Ultrasonido en zona lumbar.", t12.getNombreTerapia()));
 
         // Paciente 10: Mauricio Vera → 1 sesión
-        paciente10.getSesiones().add(new SesionTerapeutica("19/08/2025", "15:30", terapeuta10, "Aplicación de ultrasonido en la zona lumbar.", t12.getNombreTerapia()));
+        paciente10.agregarSesion(new SesionTerapeutica("19/08/2025", "15:30", terapeuta10, "Aplicación de ultrasonido en la zona lumbar.", t12.getNombreTerapia()));
         
         
         //INICIO MENÚ
@@ -463,12 +463,13 @@ public class ProyectoSIA {
                     for (Paciente p : pacientes) {
                         if (p.getRut().equalsIgnoreCase(rutBusqueda)) {
                             encontrado = true;
-                            if (p.getSesiones().isEmpty()) {
+                            if (p.getCantidadSesiones() == 0) {
                                 System.out.println("El paciente no tiene sesiones registradas.");
                             } else {
                                 System.out.println("###### SESIONES DEL PACIENTE " + p.getNombre() + " ######");
-                                for (SesionTerapeutica sesion : p.getSesiones()) {
-                                    sesion.mostrarInfoSesion();
+                                List<SesionTerapeutica> sesionesCopia = p.getSesionesCopia();
+                                for (int i = 0; i < p.getCantidadSesiones(); i++) {
+                                    sesionesCopia.get(i).mostrarInfoSesion();
                                 }
                             }
                             break;
