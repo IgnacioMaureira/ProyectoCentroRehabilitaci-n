@@ -23,7 +23,7 @@ public class Terapias {
         this.nombreTerapia = nombreTerapia;
     }
 
-    public void settTipoTerapia(String tipo) {
+    public void setTipoTerapia(String tipo) {
         this.tipoDeTerapia = tipo;
     }
     
