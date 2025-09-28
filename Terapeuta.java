@@ -1,64 +1,31 @@
 package proyectosia;
 
-public class Terapeuta{
-    private String rut;
-    private String nombre;
-    private int edad;
-    private String fechaDeNacimiento;
+public class Terapeuta extends Persona {
     private String especialidad;
 
-    public Terapeuta(String rut, String nombre, int edad, String fechaDeNacimiento, String especialidad){
-        this.rut = rut;
-        this.nombre = nombre;
-        this.edad = edad;
-        this.fechaDeNacimiento= fechaDeNacimiento;
+    public Terapeuta(String rut, String nombre, int edad, String fechaDeNacimiento, String especialidad) {
+        super(rut, nombre, edad, fechaDeNacimiento);
         this.especialidad = especialidad;
     }
 
-    //Getters
-    
-    public String getRut(){
-        return rut;
+    // Getter y Setter propios
+    public String getEspecialidad() { return especialidad; }
+    public void setEspecialidad(String especialidad) { this.especialidad = especialidad; }
+
+    // Sobrecarga: mostrar datos con distinto nivel de detalle
+    public void mostrarDatos() {
+        System.out.println("Nombre: " + getNombre() + " | Especialidad: " + especialidad);
     }
-    
-    public String getNombre(){
-        return nombre;
-    }
-    
-    public int getEdad(){
-        return edad;
-    }
-    public String getfechaDeNacimiento(){
-        return fechaDeNacimiento;
-    }
-    
-    public String getEspecialidad(){
-        return especialidad;
-    }
-    
-    
-    //Setters
-    public void setRut(String rut){
-        this.rut = rut;
-    }
-    
-    public void setNombre(String nombre){
-        this.nombre = nombre;
-    }
-    
-    public void setEdad(int edad){
-        this.edad = edad;
-    }
-    public void setfechaDeNacimiento(String fechaDeNacimiento){
-        this.fechaDeNacimiento= fechaDeNacimiento;
-}
-    public void setEspecialidad(String especialidad){
-        this.especialidad = especialidad;
-    }
-    
-    public void mostrarDatos(){
-        System.out.println("Nombre: " + nombre);
-        System.out.println("Edad: " + edad);
-        System.out.println("Especialidad: " + especialidad);
+
+    public void mostrarDatos(boolean detalleCompleto) {
+        if (detalleCompleto) {
+            System.out.println("Nombre: " + getNombre());
+            System.out.println("Rut: " + getRut());
+            System.out.println("Edad: " + getEdad());
+            System.out.println("Fecha Nac.: " + getFechaDeNacimiento());
+            System.out.println("Especialidad: " + especialidad);
+        } else {
+            mostrarDatos();
+        }
     }
 }
