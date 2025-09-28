@@ -192,8 +192,62 @@ public class PageP extends javax.swing.JPanel {
     }                                        
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {                                         
-        // TODO add your handling code here:
-    }                                        
+        String rut = javax.swing.JOptionPane.showInputDialog(this, "Ingrese el RUT del paciente:");
+        if (rut == null || rut.trim().isEmpty()) return;
+
+        Paciente paciente = datos.pacientes.stream()
+                .filter(p -> p.getRut().equalsIgnoreCase(rut.trim()))
+                .findFirst()
+                .orElse(null);
+
+        if (paciente == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "No se encontró paciente con ese RUT.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Texto con el estado actual
+        String estadoActual = paciente.getEstado()
+                ? "Actualmente este paciente ha TERMINADO su tratamiento."
+                : "Actualmente este paciente NO ha terminado su tratamiento.";
+
+        javax.swing.JLabel lblEstado = new javax.swing.JLabel(estadoActual);
+
+        // Crear botones
+        javax.swing.JButton btnTerminado = new javax.swing.JButton("Marcar como Terminado");
+        javax.swing.JButton btnNoTerminado = new javax.swing.JButton("Marcar como No Terminado");
+
+        // Panel con layout vertical
+        javax.swing.JPanel panel = new javax.swing.JPanel();
+        panel.setLayout(new javax.swing.BoxLayout(panel, javax.swing.BoxLayout.Y_AXIS));
+        panel.add(lblEstado);
+        panel.add(javax.swing.Box.createVerticalStrut(10)); // Espacio
+        panel.add(btnTerminado);
+        panel.add(btnNoTerminado);
+
+        // Crear ventana modal
+        javax.swing.JDialog dialog = new javax.swing.JDialog((java.awt.Frame) null, "Cambiar Estado de Paciente", true);
+        dialog.getContentPane().add(panel);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+
+        // Acciones de botones
+        btnTerminado.addActionListener(e -> {
+            paciente.setEstado(true);
+            datos.guardarPacientes();
+            javax.swing.JOptionPane.showMessageDialog(this, "Estado actualizado: TERMINÓ terapia.");
+            dialog.dispose();
+        });
+
+        btnNoTerminado.addActionListener(e -> {
+            paciente.setEstado(false);
+            datos.guardarPacientes();
+            javax.swing.JOptionPane.showMessageDialog(this, "Estado actualizado: NO ha terminado terapia.");
+            dialog.dispose();
+        });
+
+        dialog.setVisible(true);
+    }
+                                      
 
 
     // Variables declaration - do not modify                     
