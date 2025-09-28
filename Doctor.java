@@ -1,55 +1,28 @@
 package proyectosia;
 
-public class Doctor {
-    private String nombre;
-    private String rut;
-    private int edad;
-    private String fechaDeNacimiento; 
+public class Doctor extends Persona {
+    private String especialidadMedica;
 
-    public Doctor(String nombre, String rut, int edad, String fechaDeNacimiento) {
-        this.nombre = nombre;
-        this.rut = rut;
-        this.edad = edad;
-        this.fechaDeNacimiento = fechaDeNacimiento;
+    public Doctor(String rut, String nombre, int edad, String fechaDeNacimiento, String especialidadMedica) {
+        super(rut, nombre, edad, fechaDeNacimiento);
+        this.especialidadMedica = especialidadMedica;
     }
 
-    //Getters
-    public String getNombre() {
-        return nombre;
+    // Getter y Setter propios
+    public String getEspecialidadMedica() {
+        return especialidadMedica;
     }
 
-    public String getRut() {
-        return rut;
+    public void setEspecialidadMedica(String especialidadMedica) {
+        this.especialidadMedica = especialidadMedica;
     }
 
-    public int getEdad() {
-        return edad;
-    }
-
-    public String getFechaDeNacimiento() {
-        return fechaDeNacimiento;
-    }
-
-    //Setters
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public void setRut(String rut) {
-        this.rut = rut;
-    }
-
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
-
-    public void setFechaDeNacimiento(String fechaDeNacimiento) {
-        this.fechaDeNacimiento = fechaDeNacimiento;
-    }
-    
-    //METODOS
-    public void mostrarDatos(){
-        System.out.println("Nombre: " + nombre);
-        System.out.println("Edad: " + edad);
+    // Métodos
+    public void mostrarDatos() {
+        System.out.println("Nombre: " + getNombre());
+        System.out.println("Rut: " + getRut());
+        System.out.println("Edad: " + getEdad());
+        System.out.println("Fecha de Nacimiento: " + getFechaDeNacimiento());
+        System.out.println("Especialidad Médica: " + especialidadMedica);
     }
 }
