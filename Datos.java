@@ -7,7 +7,7 @@ public class Datos {
     public List<Paciente> pacientes = new ArrayList<>();
     public List<Doctor> doctores = new ArrayList<>();
     public List<Terapeuta> terapeutas = new ArrayList<>();
-    public List<Terapias> terapias = new ArrayList<>();
+    public Map<String, Terapias> terapias = new HashMap<>();
     public List<SesionTerapeutica> sesiones = new ArrayList<>();
     public List<Tratamiento> tratamientos = new ArrayList<>();
 
@@ -83,10 +83,13 @@ public class Datos {
         try (BufferedReader br = new BufferedReader(new FileReader(rutaTerapias))) {
             String linea;
             terapias.clear();
-            br.readLine();
+            br.readLine(); // Saltar encabezado
             while ((linea = br.readLine()) != null) {
                 String[] campos = linea.split(";");
-                terapias.add(new Terapias(campos[0], campos[1]));
+                String identificador = campos[0];
+                String nombre = campos[1];
+                String tipo = campos[2];
+                terapias.put(identificador, new Terapias(nombre, tipo));
             }
         } catch (IOException e) {
             System.out.println("Error cargando terapias: " + e.getMessage());
@@ -191,9 +194,11 @@ public class Datos {
 
     public void guardarTerapias() {
         try (PrintWriter pw = new PrintWriter(new FileWriter(rutaTerapias))) {
-            pw.println("nombreTerapia;tipoDeTerapia");
-            for (Terapias t : terapias) {
-                pw.println(t.getNombreTerapia() + ";" + t.getTipoTerapia());
+            pw.println("identificador;nombreTerapia;tipoDeTerapia");
+            for (Map.Entry<String, Terapias> entry : terapias.entrySet()) {
+                String identificador = entry.getKey();
+                Terapias t = entry.getValue();
+                pw.println(identificador + ";" + t.getNombreTerapia() + ";" + t.getTipoTerapia());
             }
         } catch (IOException e) {
             System.out.println("Error guardando terapias: " + e.getMessage());
