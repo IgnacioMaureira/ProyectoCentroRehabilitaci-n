@@ -2,82 +2,47 @@ package proyectosia;
 
 import java.util.*;
 
-public class Paciente {
-    private String rut;
-    private String nombre;
-    private int edad;
-    private String fechaDeNacimiento;
+public class Paciente extends Persona {
     private List<SesionTerapeutica> sesiones;
     private boolean estado;
-    
-    public Paciente(String rut,String nombre,int edad,String fechaDeNacimiento){
-        this.rut = rut;
-        this.nombre = nombre;
-        this.edad = edad;
-        this.fechaDeNacimiento = fechaDeNacimiento;
+
+    public Paciente(String rut, String nombre, int edad, String fechaDeNacimiento) {
+        super(rut, nombre, edad, fechaDeNacimiento);
         this.sesiones = new ArrayList<>();
-        estado = false;
+        this.estado = false;
     }
-    
-    // Agregar sesion pasando un objeto SesionTerapeutica ya creado
+
+    // Agregar sesión pasando un objeto SesionTerapeutica ya creado
     public void agregarSesion(SesionTerapeutica sesion) {
         this.sesiones.add(sesion);
     }
 
-    // Agregar sesion creando el objeto dentro y a partir de los datos basicos
+    // Agregar sesión creando el objeto dentro y a partir de los datos básicos
     public void agregarSesion(String fecha, String hora, Terapeuta terapeuta, String observaciones, String tipoTerapia) {
         SesionTerapeutica sesion = new SesionTerapeutica(fecha, hora, terapeuta, observaciones, tipoTerapia);
         this.sesiones.add(sesion);
     }
-    
+
+    public void mostrarSesiones() {
+        if (sesiones.isEmpty()) {
+            System.out.println("No hay sesiones registradas para " + getNombre());
+            return;
+        }
+        for (int i = 0; i < sesiones.size(); i++) {
+            System.out.println("---- Sesión " + (i + 1) + " ----");
+            sesiones.get(i).mostrarInfoSesion();
+        }
+    }
+
     public int getCantidadSesiones() {
         return sesiones.size();
     }
-    
-     // Getters
-    public String getRut() {
-        return rut;
-    }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public int getEdad() {
-        return edad;
-    }
-
-    public String getFechaDeNacimiento() {
-        return fechaDeNacimiento;
-    }
-    
-    public List<SesionTerapeutica> getSesionesCopia() {
-        return new ArrayList<>(sesiones);
-    }
-    
-    public boolean getEstado(){
+    public boolean getEstado() {
         return estado;
     }
 
-    // Setters
-    public void setRut(String rut) {
-        this.rut = rut;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
-
-    public void setFechaDeNacimiento(String fechaDeNacimiento) {
-        this.fechaDeNacimiento = fechaDeNacimiento;
-    }
-    
-    
-    public void setEstado(boolean estado){
+    public void setEstado(boolean estado) {
         this.estado = estado;
     }
 }
