@@ -1,41 +1,16 @@
 package proyectosia;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Paciente extends Persona {
-    private List<SesionTerapeutica> sesiones;
     private boolean estado;
+    private List<SesionTerapeutica> sesiones; // Lista interna de sesiones
 
     public Paciente(String rut, String nombre, int edad, String fechaDeNacimiento) {
         super(rut, nombre, edad, fechaDeNacimiento);
-        this.sesiones = new ArrayList<>();
         this.estado = false;
-    }
-
-    // Agregar sesión pasando un objeto SesionTerapeutica ya creado
-    public void agregarSesion(SesionTerapeutica sesion) {
-        this.sesiones.add(sesion);
-    }
-
-    // Agregar sesión creando el objeto dentro y a partir de los datos básicos
-    public void agregarSesion(String fecha, String hora, Terapeuta terapeuta, String observaciones, String tipoTerapia) {
-        SesionTerapeutica sesion = new SesionTerapeutica(fecha, hora, terapeuta, observaciones, tipoTerapia);
-        this.sesiones.add(sesion);
-    }
-
-    public void mostrarSesiones() {
-        if (sesiones.isEmpty()) {
-            System.out.println("No hay sesiones registradas para " + getNombre());
-            return;
-        }
-        for (int i = 0; i < sesiones.size(); i++) {
-            System.out.println("---- Sesión " + (i + 1) + " ----");
-            sesiones.get(i).mostrarInfoSesion();
-        }
-    }
-
-    public int getCantidadSesiones() {
-        return sesiones.size();
+        this.sesiones = new ArrayList<>();
     }
 
     public boolean getEstado() {
@@ -45,4 +20,38 @@ public class Paciente extends Persona {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
+
+    // Agregar sesión a este paciente
+    public void agregarSesion(String fecha, String hora, Terapeuta terapeuta, String observaciones, String tipoTerapia) {
+        SesionTerapeutica sesion = new SesionTerapeutica(fecha, hora, terapeuta, observaciones, tipoTerapia, this.getRut());
+        sesiones.add(sesion);
+    }
+
+    // Exportar sesiones (para guardado en CSV)
+    public List<SesionTerapeutica> exportarSesiones() {
+        return new ArrayList<>(sesiones); // Devuelve copia
+    }
+
+    // Mostrar todas las sesiones
+    public void mostrarSesiones() {
+        if (sesiones.isEmpty()) {
+            System.out.println("No hay sesiones registradas para este paciente.");
+            return;
+        }
+        for (SesionTerapeutica s : sesiones) {
+            s.mostrarInfoSesion();
+            System.out.println("----------------------------");
+        }
+    }
+    
+
+    public boolean eliminarUltimaSesion() {
+        if (sesiones == null || sesiones.isEmpty()) {
+            return false; // No hay sesiones que eliminar
+        }
+        sesiones.remove(sesiones.size() - 1);
+        return true; // Eliminación exitosa
+    }
+
+
 }
