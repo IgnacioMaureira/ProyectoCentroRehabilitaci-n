@@ -10,9 +10,11 @@ public class PageD extends javax.swing.JPanel {
 
     @SuppressWarnings("unchecked")
     private void initComponents() {
+
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setMaximumSize(new java.awt.Dimension(846, 397));
         setMinimumSize(new java.awt.Dimension(846, 397));
@@ -26,31 +28,37 @@ public class PageD extends javax.swing.JPanel {
         jButton2.setText("Mostrar Listado de Doctores");
         jButton2.addActionListener(evt -> jButton2ActionPerformed(evt));
 
+        jButton3.setText("Modificar Datos de un Doctor");
+        jButton3.addActionListener(evt -> jButton3ActionPerformed(evt));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addGap(0, 297, Short.MAX_VALUE)
-                            .addComponent(jLabel1)
-                            .addGap(0, 297, Short.MAX_VALUE))
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 297, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addGap(0, 297, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jLabel1)
-                    .addGap(18, 18, 18)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(18, 18, 18)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(119, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(81, Short.MAX_VALUE))
         );
     }
 
@@ -111,7 +119,6 @@ public class PageD extends javax.swing.JPanel {
               .append("-----------------------------\n");
         }
 
-        // JTextArea con scroll como en PageP
         javax.swing.JTextArea textArea = new javax.swing.JTextArea(sb.toString());
         textArea.setEditable(false);
         textArea.setColumns(40);
@@ -121,8 +128,88 @@ public class PageD extends javax.swing.JPanel {
         javax.swing.JOptionPane.showMessageDialog(this, scrollPane, "Listado de Doctores", javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        if (datos.doctores.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "NO EXISTEN DOCTORES REGISTRADOS EN EL SISTEMA", "Información", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Pedir RUT del doctor a modificar
+        String rut = javax.swing.JOptionPane.showInputDialog(this, "Ingrese el RUT del Doctor que desea modificar:");
+        if (rut == null || rut.trim().isEmpty()) return;
+
+        Doctor doctor = null;
+        for (Doctor d : datos.doctores) {
+            if (d.getRut().equalsIgnoreCase(rut.trim())) {
+                doctor = d;
+                break;
+            }
+        }
+
+        if (doctor == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "No se encontró un doctor con ese RUT.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Menú para elegir qué modificar
+        String[] opciones = {"Nombre", "Edad", "Fecha de Nacimiento", "Especialidad Médica"};
+        String opcion = (String) javax.swing.JOptionPane.showInputDialog(
+                this,
+                "Seleccione el dato que desea modificar:",
+                "Modificar Doctor",
+                javax.swing.JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones,
+                opciones[0]
+        );
+
+        if (opcion == null) return;
+
+        switch (opcion) {
+            case "Nombre":
+                String nuevoNombre = javax.swing.JOptionPane.showInputDialog(this, "Ingrese el nuevo nombre:", doctor.getNombre());
+                if (nuevoNombre != null && !nuevoNombre.trim().isEmpty()) {
+                    doctor.setNombre(nuevoNombre.trim());
+                }
+                break;
+
+            case "Edad":
+                String nuevaEdadStr = javax.swing.JOptionPane.showInputDialog(this, "Ingrese la nueva edad:", doctor.getEdad());
+                if (nuevaEdadStr != null && !nuevaEdadStr.trim().isEmpty()) {
+                    try {
+                        int nuevaEdad = Integer.parseInt(nuevaEdadStr.trim());
+                        doctor.setEdad(nuevaEdad);
+                    } catch (NumberFormatException e) {
+                        javax.swing.JOptionPane.showMessageDialog(this, "Edad inválida.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+                break;
+
+            case "Fecha de Nacimiento":
+                String nuevaFecha = javax.swing.JOptionPane.showInputDialog(this, "Ingrese la nueva fecha de nacimiento (ej: 01-01-1980):", doctor.getFechaDeNacimiento());
+                if (nuevaFecha != null && !nuevaFecha.trim().isEmpty()) {
+                    doctor.setFechaDeNacimiento(nuevaFecha.trim());
+                }
+                break;
+
+            case "Especialidad Médica":
+                String nuevaEspecialidad = javax.swing.JOptionPane.showInputDialog(this, "Ingrese la nueva especialidad médica:", doctor.getEspecialidadMedica());
+                if (nuevaEspecialidad != null && !nuevaEspecialidad.trim().isEmpty()) {
+                    doctor.setEspecialidadMedica(nuevaEspecialidad.trim());
+                }
+                break;
+        }
+
+        // Guardar cambios en el CSV
+        datos.guardarDoctores();
+        javax.swing.JOptionPane.showMessageDialog(this, "Datos del doctor actualizados correctamente.");
+    }     
+
     // Variables declaration                    
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    // End of variables declaration                  
 }
