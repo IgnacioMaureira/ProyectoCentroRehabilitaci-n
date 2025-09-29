@@ -72,14 +72,27 @@ public class PageT extends javax.swing.JPanel {
 
         boolean existe = datos.terapeutas.stream()
                 .anyMatch(t -> t.getRut().equalsIgnoreCase(rut.trim()));
-
         if (existe) {
-            JOptionPane.showMessageDialog(this, "Terapeuta ya registrado con ese RUT.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Terapeuta ya registrado con ese RUT.", 
+                "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         String nombre = JOptionPane.showInputDialog(this, "Ingrese Nombre del Nuevo Terapeuta:");
-        if (nombre == null || nombre.trim().isEmpty()) return;
+        try {
+            if (nombre == null || nombre.trim().isEmpty()){
+
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Porfavor inserte un Nombre Valido.", 
+                    "Error de Validación", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+                return; 
+                }
+        }catch (NumberFormatException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Nombre inválida.", 
+                "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         String edadStr = JOptionPane.showInputDialog(this, "Ingrese Edad del Nuevo Terapeuta:");
         if (edadStr == null || edadStr.trim().isEmpty()) return;
@@ -87,24 +100,40 @@ public class PageT extends javax.swing.JPanel {
         int edad;
         try {
             edad = Integer.parseInt(edadStr.trim());
+
+            if (edad < 0) {
+                JOptionPane.showMessageDialog(this, 
+                    "La edad no puede ser negativa.", 
+                    "Error de Validación", 
+                    JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Edad inválida.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Edad inválida.", 
+                "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        String fechaNacimiento = JOptionPane.showInputDialog(this, "Ingrese Fecha de Nacimiento del Nuevo Terapeuta:");
+        String fechaNacimiento = JOptionPane.showInputDialog(this, 
+            "Ingrese Fecha de Nacimiento del Nuevo Terapeuta:");
         if (fechaNacimiento == null || fechaNacimiento.trim().isEmpty()) return;
 
         String especialidad = JOptionPane.showInputDialog(this, "Ingrese Especialidad del Nuevo Terapeuta:");
         if (especialidad == null || especialidad.trim().isEmpty()) return;
 
-        Terapeuta terapeuta = new Terapeuta(rut.trim(), nombre.trim(), edad, fechaNacimiento.trim(), especialidad.trim());
-        datos.terapeutas.add(terapeuta);
-        datos.guardarTerapeutas();
+        try {
+            Terapeuta terapeuta = new Terapeuta(rut.trim(), nombre.trim(), edad, 
+            fechaNacimiento.trim(), especialidad.trim());
+            datos.terapeutas.add(terapeuta);
+            datos.guardarTerapeutas();
+            JOptionPane.showMessageDialog(this, "Terapeuta agregado correctamente.");
 
-        JOptionPane.showMessageDialog(this, "Terapeuta agregado correctamente.");
+        } catch (EdadNegativaException | NombreNullException ex) {
+            JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), 
+                "Error de Validación", JOptionPane.ERROR_MESSAGE);
+        }
     }
-
     // Botón 2: Mostrar Terapeutas
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         if (datos.terapeutas.isEmpty()) {
@@ -134,7 +163,7 @@ public class PageT extends javax.swing.JPanel {
     }
 
     // Botón 3: Modificar Terapeuta
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) throws NombreNullException, EdadNegativaException {
         if (datos.terapeutas.isEmpty()) {
             JOptionPane.showMessageDialog(this, "NO EXISTEN TERAPEUTAS REGISTRADOS EN EL SISTEMA", "Información", JOptionPane.INFORMATION_MESSAGE);
             return;
