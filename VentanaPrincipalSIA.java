@@ -176,8 +176,6 @@ public class VentanaPrincipalSIA extends javax.swing.JFrame {
         content.repaint();
     }                                        
 
-    
-
     // Variables declaration - do not modify                     
     private javax.swing.JPanel content;
     private javax.swing.JButton jButton1;
