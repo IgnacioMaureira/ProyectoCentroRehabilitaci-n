@@ -3,7 +3,7 @@ package proyectosia;
 public class Doctor extends Persona {
     private String especialidadMedica;
 
-    public Doctor(String rut, String nombre, int edad, String fechaDeNacimiento, String especialidadMedica) {
+    public Doctor(String rut, String nombre, int edad, String fechaDeNacimiento, String especialidadMedica) throws EdadNegativaException,NombreNullException {
         super(rut, nombre, edad, fechaDeNacimiento);
         this.especialidadMedica = especialidadMedica;
     }
