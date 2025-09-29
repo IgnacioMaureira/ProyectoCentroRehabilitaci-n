@@ -3,10 +3,10 @@ package proyectosia;
 import javax.swing.JOptionPane;
 
 public class PageP extends javax.swing.JPanel {
-    private Datos datos;
+    private Datos datos; // <- atributo de Datos
 
     public PageP(Datos datos) {
-        this.datos = datos; 
+        this.datos = datos; // <- guardar referencia
         initComponents();
     }
 
@@ -167,46 +167,69 @@ public class PageP extends javax.swing.JPanel {
     
     
     
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt){
         String rut = javax.swing.JOptionPane.showInputDialog(this, "Ingrese Rut del Nuevo Paciente:");
         if (rut == null || rut.trim().isEmpty()) return;
 
-        // Validar si ya existe
         boolean existe = datos.pacientes.stream()
                 .anyMatch(p -> p.getRut().equalsIgnoreCase(rut.trim()));
-
         if (existe) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Paciente ya registrado con ese RUT.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Paciente ya registrado con ese RUT.", 
+                "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         String nombre = javax.swing.JOptionPane.showInputDialog(this, "Ingrese Nombre del Nuevo Paciente:");
-        if (nombre == null || nombre.trim().isEmpty()) return;
+        try {
+            if (nombre == null || nombre.trim().isEmpty()){
 
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Porfavor inserte un Nombre Valido.", 
+                    "Error de Validación", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+                return; 
+                }
+        }catch (NumberFormatException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Nombre inválida.", 
+                "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         String edadStr = javax.swing.JOptionPane.showInputDialog(this, "Ingrese Edad del Nuevo Paciente:");
         if (edadStr == null || edadStr.trim().isEmpty()) return;
 
         int edad;
         try {
             edad = Integer.parseInt(edadStr.trim());
+
+            if (edad < 0) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "La edad no puede ser negativa.", 
+                    "Error de Validación", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
         } catch (NumberFormatException e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Edad inválida.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Edad inválida.", 
+                "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        String fechaNacimiento = javax.swing.JOptionPane.showInputDialog(this, "Ingrese Fecha de Nacimiento (ej: 01-01-2000):");
+        String fechaNacimiento = javax.swing.JOptionPane.showInputDialog(this, 
+            "Ingrese Fecha de Nacimiento (ej: 01-01-2000):");
         if (fechaNacimiento == null || fechaNacimiento.trim().isEmpty()) return;
 
-        // Crear paciente y agregar a la lista
-        Paciente nuevo = new Paciente(rut.trim(), nombre.trim(), edad, fechaNacimiento.trim());
-        datos.pacientes.add(nuevo);
+        try {
+            Paciente nuevo = new Paciente(rut.trim(), nombre.trim(), edad, fechaNacimiento.trim());
+            datos.pacientes.add(nuevo);
+            datos.guardarPacientes();
+            javax.swing.JOptionPane.showMessageDialog(this, "Paciente agregado correctamente.");
 
-        // Guardar cambios
-        datos.guardarPacientes();
-
-        javax.swing.JOptionPane.showMessageDialog(this, "Paciente agregado correctamente.");
+        } catch (EdadNegativaException | NombreNullException ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), 
+                "Error de Validación", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         if (datos.pacientes.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "NO EXISTEN PACIENTES REGISTRADOS", "Listado Pacientes", javax.swing.JOptionPane.INFORMATION_MESSAGE);
@@ -420,7 +443,7 @@ public class PageP extends javax.swing.JPanel {
         }
     }                                        
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) throws NombreNullException, EdadNegativaException {                                         
         String rut = JOptionPane.showInputDialog(this, "Ingrese el RUT del paciente a modificar:");
         if (rut == null || rut.trim().isEmpty()) return;
 
