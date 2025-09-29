@@ -17,6 +17,7 @@ public class PageT extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setMaximumSize(new java.awt.Dimension(846, 397));
         setMinimumSize(new java.awt.Dimension(846, 397));
@@ -30,31 +31,37 @@ public class PageT extends javax.swing.JPanel {
         jButton2.setText("Mostrar Listado de Terapeutas");
         jButton2.addActionListener(evt -> jButton2ActionPerformed(evt));
 
+        jButton3.setText("Modificar Datos de un Terapeuta");
+        jButton3.addActionListener(evt -> jButton3ActionPerformed(evt));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 834, Short.MAX_VALUE))
-                    .addContainerGap())
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1)
-                    .addGap(297, 297, 297))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(299, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(297, 297, 297))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 834, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jLabel1)
-                    .addGap(18, 18, 18)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(18, 18, 18)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(119, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(81, Short.MAX_VALUE))
         );
     }
 
@@ -126,7 +133,85 @@ public class PageT extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(this, scrollPane, "Listado de Terapeutas", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    // Botón 3: Modificar Terapeuta
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
+        if (datos.terapeutas.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "NO EXISTEN TERAPEUTAS REGISTRADOS EN EL SISTEMA", "Información", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        String rut = JOptionPane.showInputDialog(this, "Ingrese el RUT del Terapeuta que desea modificar:");
+        if (rut == null || rut.trim().isEmpty()) return;
+
+        Terapeuta terapeuta = null;
+        for (Terapeuta t : datos.terapeutas) {
+            if (t.getRut().equalsIgnoreCase(rut.trim())) {
+                terapeuta = t;
+                break;
+            }
+        }
+
+        if (terapeuta == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró un terapeuta con ese RUT.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String[] opciones = {"Nombre", "Edad", "Fecha de Nacimiento", "Especialidad"};
+        String opcion = (String) JOptionPane.showInputDialog(
+                this,
+                "Seleccione el dato que desea modificar:",
+                "Modificar Terapeuta",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones,
+                opciones[0]
+        );
+
+        if (opcion == null) return;
+
+        switch (opcion) {
+            case "Nombre":
+                String nuevoNombre = JOptionPane.showInputDialog(this, "Ingrese el nuevo nombre:", terapeuta.getNombre());
+                if (nuevoNombre != null && !nuevoNombre.trim().isEmpty()) {
+                    terapeuta.setNombre(nuevoNombre.trim());
+                }
+                break;
+
+            case "Edad":
+                String nuevaEdadStr = JOptionPane.showInputDialog(this, "Ingrese la nueva edad:", terapeuta.getEdad());
+                if (nuevaEdadStr != null && !nuevaEdadStr.trim().isEmpty()) {
+                    try {
+                        int nuevaEdad = Integer.parseInt(nuevaEdadStr.trim());
+                        terapeuta.setEdad(nuevaEdad);
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(this, "Edad inválida.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+                break;
+
+            case "Fecha de Nacimiento":
+                String nuevaFecha = JOptionPane.showInputDialog(this, "Ingrese la nueva fecha de nacimiento:", terapeuta.getFechaDeNacimiento());
+                if (nuevaFecha != null && !nuevaFecha.trim().isEmpty()) {
+                    terapeuta.setFechaDeNacimiento(nuevaFecha.trim());
+                }
+                break;
+
+            case "Especialidad":
+                String nuevaEspecialidad = JOptionPane.showInputDialog(this, "Ingrese la nueva especialidad:", terapeuta.getEspecialidad());
+                if (nuevaEspecialidad != null && !nuevaEspecialidad.trim().isEmpty()) {
+                    terapeuta.setEspecialidad(nuevaEspecialidad.trim());
+                }
+                break;
+        }
+
+        datos.guardarTerapeutas();
+        JOptionPane.showMessageDialog(this, "Datos del terapeuta actualizados correctamente.");
+    }
+
+    // Variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
 }
