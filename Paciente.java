@@ -7,10 +7,10 @@ public class Paciente extends Persona {
     private boolean estado;
     private List<SesionTerapeutica> sesiones; // Lista interna de sesiones
 
-    public Paciente(String rut, String nombre, int edad, String fechaDeNacimiento) {
+    public Paciente(String rut, String nombre, int edad, String fechaDeNacimiento) throws EdadNegativaException,NombreNullException {
         super(rut, nombre, edad, fechaDeNacimiento);
-        this.estado = false;
         this.sesiones = new ArrayList<>();
+        this.estado = false;
     }
 
     public boolean getEstado() {
