@@ -20,7 +20,7 @@ public class Datos {
     private final String rutaTratamientos = "data/tratamientos.csv";
 
     // ─── CARGAR ───────────────────────────────
-    public void cargarPacientes() {
+    public void cargarPacientes() throws EdadNegativaException, NombreNullException {
         try (BufferedReader br = new BufferedReader(new FileReader(rutaPacientes))) {
             String linea;
             pacientes.clear();
@@ -41,7 +41,7 @@ public class Datos {
         }
     }
 
-    public void cargarDoctores() {
+    public void cargarDoctores() throws EdadNegativaException, NombreNullException {
         try (BufferedReader br = new BufferedReader(new FileReader(rutaDoctores))) {
             String linea;
             doctores.clear();
@@ -60,7 +60,7 @@ public class Datos {
         }
     }
 
-    public void cargarTerapeutas() {
+    public void cargarTerapeutas() throws EdadNegativaException, NombreNullException {
         try (BufferedReader br = new BufferedReader(new FileReader(rutaTerapeutas))) {
             String linea;
             terapeutas.clear();
@@ -266,7 +266,7 @@ public class Datos {
     }
 
     // ─── CARGAR Y GUARDAR TODO ───────────────────────────────
-    public void cargarTodo() {
+    public void cargarTodo() throws EdadNegativaException, NombreNullException {
         cargarDoctores();
         cargarTerapeutas();
         cargarTerapias();
