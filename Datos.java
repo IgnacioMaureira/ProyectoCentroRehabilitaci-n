@@ -97,38 +97,64 @@ public class Datos {
     }
 
     public void cargarSesiones() {
+        File file = new File(rutaSesiones);
+        if (!file.exists()) {
+            System.out.println("No existe archivo de sesiones para cargar.");
+            return;
+        }
+
         try (BufferedReader br = new BufferedReader(new FileReader(rutaSesiones))) {
             String linea;
             sesiones.clear();
-            br.readLine();
-            while ((linea = br.readLine()) != null) {
-                String[] campos = linea.split(";");
-                String rutPaciente = campos[0];
-                String rutTerapeuta = campos[1];
-                String fecha = campos[2];
-                String hora = campos[3];
-                String tipoTerapia = campos[4];
-                String observaciones = campos[5];
+            br.readLine(); // Saltar encabezado
 
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split(";", -1);
+
+                if (partes.length < 7) continue;
+
+                String fecha = partes[0];
+                String hora = partes[1];
+                String rutTerapeuta = partes[2];
+                String nombreTerapeuta = partes[3];
+                String tipoTerapia = partes[4];
+                String observaciones = partes[5];
+                String rutPaciente = partes[6];
+
+                // Buscar terapeuta existente
                 Terapeuta terapeuta = terapeutas.stream()
                         .filter(t -> t.getRut().equals(rutTerapeuta))
                         .findFirst()
                         .orElse(null);
 
+                if (terapeuta == null) {
+                    System.out.println("Sesión ignorada: terapeuta con rut '" + rutTerapeuta + "' no existe.");
+                    continue; // Ignorar sesión si terapeuta no existe
+                }
+
+                // Crear sesión
+                SesionTerapeutica sesion = new SesionTerapeutica(fecha, hora, terapeuta, observaciones, tipoTerapia, rutPaciente);
+
+                // Asociar sesión al paciente
                 Paciente paciente = pacientes.stream()
                         .filter(p -> p.getRut().equals(rutPaciente))
                         .findFirst()
                         .orElse(null);
-
-                if (terapeuta != null && paciente != null) {
-                    SesionTerapeutica sesion = new SesionTerapeutica(fecha, hora, terapeuta, observaciones, tipoTerapia);
-                    sesiones.add(sesion);
+                if (paciente != null) {
+                    paciente.agregarSesion(fecha, hora, terapeuta, observaciones, tipoTerapia);
+                } else {
+                    System.out.println("Sesión ignorada: paciente con rut '" + rutPaciente + "' no existe.");
+                    continue;
                 }
+
+                sesiones.add(sesion);
             }
         } catch (IOException e) {
             System.out.println("Error cargando sesiones: " + e.getMessage());
         }
     }
+
+
 
     public void cargarTratamientos() {
         try (BufferedReader br = new BufferedReader(new FileReader(rutaTratamientos))) {
@@ -207,21 +233,25 @@ public class Datos {
 
     public void guardarSesiones() {
         try (PrintWriter pw = new PrintWriter(new FileWriter(rutaSesiones))) {
-            pw.println("rutPaciente;rutTerapeuta;fecha;hora;tipoTerapia;observaciones");
+            pw.println("fecha;hora;rutTerapeuta;nombreTerapeuta;tipoTerapia;observaciones;rutPaciente");
+
             for (SesionTerapeutica s : sesiones) {
-                String rutPaciente = pacientes.stream()
-                        .filter(p -> sesiones.contains(s))
-                        .map(Paciente::getRut)
-                        .findFirst()
-                        .orElse("desconocido");
-                pw.println(rutPaciente + ";" + s.getTerapeuta().getRut() + ";" +
-                        s.getFecha() + ";" + s.getHora() + ";" +
-                        s.getTipoTerapia() + ";" + s.getObservaciones());
+                if (s.getTerapeuta() != null) {
+                    pw.println(s.getFecha() + ";" +
+                               s.getHora() + ";" +
+                               s.getTerapeuta().getRut() + ";" +
+                               s.getTerapeuta().getNombre() + ";" +
+                               s.getTipoTerapia() + ";" +
+                               s.getObservaciones() + ";" +
+                               s.getRutPaciente());
+                }
             }
         } catch (IOException e) {
             System.out.println("Error guardando sesiones: " + e.getMessage());
         }
     }
+
+
 
     public void guardarTratamientos() {
         try (PrintWriter pw = new PrintWriter(new FileWriter(rutaTratamientos))) {
@@ -253,4 +283,94 @@ public class Datos {
         guardarSesiones();
         guardarTratamientos();
     }
+    
+    public void mostrarEstadisticasPacientes() {
+        if (pacientes.isEmpty()) {
+            System.out.println("No hay pacientes registrados en el sistema.");
+            return;
+        }
+
+        int totalPacientes = pacientes.size();
+        int pacientesTerminados = 0;
+        int pacientesNoTerminados = 0;
+
+        // Recorremos y contamos según el estado
+        for (Paciente p : pacientes) {
+            if (p.getEstado()) { 
+                // true = ha terminado (según tu definición actual)
+                pacientesTerminados++;
+            } else {
+                pacientesNoTerminados++;
+            }
+        }
+
+        // Calcular porcentajes
+        double porcentajeTerminados = ((double) pacientesTerminados / totalPacientes) * 100;
+        double porcentajeNoTerminados = ((double) pacientesNoTerminados / totalPacientes) * 100;
+
+        // Mostrar estadísticas
+        System.out.println("===============================================");
+        System.out.println("        ESTADÍSTICAS DE PACIENTES");
+        System.out.println("===============================================");
+        System.out.println("Total de pacientes registrados: " + totalPacientes);
+        System.out.println();
+        System.out.printf("Pacientes que TERMINARON terapia: %d (%.1f%%)\n", 
+                          pacientesTerminados, porcentajeTerminados);
+        System.out.printf("Pacientes que NO han terminado terapia: %d (%.1f%%)\n", 
+                          pacientesNoTerminados, porcentajeNoTerminados);
+        System.out.println("===============================================");
+    }
+    
+    public boolean eliminarPacientePorRut(String rut) {
+        boolean encontrado = false;
+
+        // 1. Eliminar paciente de la lista
+        Iterator<Paciente> iterPaciente = pacientes.iterator();
+        while (iterPaciente.hasNext()) {
+            Paciente p = iterPaciente.next();
+            if (p.getRut().equalsIgnoreCase(rut)) {
+                iterPaciente.remove();
+                encontrado = true;
+                break;
+            }
+        }
+
+        if (!encontrado) {
+            System.out.println("Paciente con rut " + rut + " no encontrado.");
+            return false;
+        }
+
+        // 2. Eliminar sesiones asociadas al paciente
+        Iterator<SesionTerapeutica> iterSesiones = sesiones.iterator();
+        while (iterSesiones.hasNext()) {
+            SesionTerapeutica s = iterSesiones.next();
+            if (s.getRutPaciente().equalsIgnoreCase(rut)) {
+                iterSesiones.remove();
+            }
+        }
+
+        // 3. Guardar cambios en archivos
+        guardarPacientes();
+        guardarSesiones();
+
+        System.out.println("Paciente con rut " + rut + " y sus sesiones han sido eliminados correctamente.");
+        return true;
+    }
+    
+    public void generarReportePacientesTxt(String rutaReporte) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(rutaReporte))) {
+            pw.println("========== REPORTE DE PACIENTES ==========");
+            for (Paciente p : pacientes) {
+                pw.println("RUT: " + p.getRut() 
+                    + " | Nombre: " + p.getNombre() 
+                    + " | Edad: " + p.getEdad() 
+                    + " | Estado: " + (p.getEstado() ? "TERMINO" : "EN CURSO"));
+            }
+            pw.println("==========================================");
+            System.out.println("Reporte generado en " + rutaReporte);
+        } catch (IOException e) {
+            System.out.println("Error al generar reporte: " + e.getMessage());
+        }
+    }
+
 }
