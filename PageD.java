@@ -64,43 +64,72 @@ public class PageD extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         String rut = javax.swing.JOptionPane.showInputDialog(this, "Ingrese Rut del Nuevo Doctor:");
-        if (rut == null || rut.trim().isEmpty()) return;
+        if (rut == null || rut.trim().isEmpty()) return; // ¡Faltaba ||!
 
         boolean existe = datos.doctores.stream()
                 .anyMatch(d -> d.getRut().equalsIgnoreCase(rut.trim()));
-
         if (existe) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Doctor ya registrado con ese RUT.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Doctor ya registrado con ese RUT.", 
+                "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         String nombre = javax.swing.JOptionPane.showInputDialog(this, "Ingrese Nombre del Nuevo Doctor:");
-        if (nombre == null || nombre.trim().isEmpty()) return;
 
+        try {
+            if (nombre == null || nombre.trim().isEmpty()){
+
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Porfavor inserte un Nombre Valido.", 
+                    "Error de Validación", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+                return; 
+                }
+        }catch (NumberFormatException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Nombre inválida.", 
+                "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         String especialidad = javax.swing.JOptionPane.showInputDialog(this, "Ingrese Especialidad Médica:");
         if (especialidad == null || especialidad.trim().isEmpty()) return;
 
         String edadStr = javax.swing.JOptionPane.showInputDialog(this, "Ingrese Edad del Nuevo Doctor:");
-        if (edadStr == null || edadStr.trim().isEmpty()) return;
+        if (edadStr == null || edadStr.trim().isEmpty()) return; 
 
         int edad;
         try {
             edad = Integer.parseInt(edadStr.trim());
+
+            if (edad < 0) {
+                javax.swing.JOptionPane.showMessageDialog(this, 
+                    "La edad no puede ser negativa.", 
+                    "Error de Validación", 
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
         } catch (NumberFormatException e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Edad inválida.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Edad inválida.", 
+                "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        String fechaNacimiento = javax.swing.JOptionPane.showInputDialog(this, "Ingrese Fecha de Nacimiento (ej: 01-01-1980):");
+        String fechaNacimiento = javax.swing.JOptionPane.showInputDialog(this, 
+            "Ingrese Fecha de Nacimiento (ej: 01-01-1980):");
         if (fechaNacimiento == null || fechaNacimiento.trim().isEmpty()) return;
 
-        Doctor nuevo = new Doctor(rut.trim(), nombre.trim(), edad, fechaNacimiento.trim(), especialidad.trim());
-        datos.doctores.add(nuevo);
-        datos.guardarDoctores();
+        try {
+            Doctor nuevo = new Doctor(rut.trim(), nombre.trim(), edad, 
+                fechaNacimiento.trim(), especialidad.trim());
+            datos.doctores.add(nuevo);
+            datos.guardarDoctores();
+            javax.swing.JOptionPane.showMessageDialog(this, "Doctor agregado correctamente.");
 
-        javax.swing.JOptionPane.showMessageDialog(this, "Doctor agregado correctamente.");
+        } catch (EdadNegativaException | NombreNullException ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), 
+                "Error de Validación", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         if (datos.doctores.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "NO EXISTEN DOCTORES REGISTRADOS EN EL SISTEMA", "Información", javax.swing.JOptionPane.INFORMATION_MESSAGE);
@@ -128,7 +157,7 @@ public class PageD extends javax.swing.JPanel {
         javax.swing.JOptionPane.showMessageDialog(this, scrollPane, "Listado de Doctores", javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) throws NombreNullException, EdadNegativaException {                                         
         if (datos.doctores.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "NO EXISTEN DOCTORES REGISTRADOS EN EL SISTEMA", "Información", javax.swing.JOptionPane.INFORMATION_MESSAGE);
             return;
